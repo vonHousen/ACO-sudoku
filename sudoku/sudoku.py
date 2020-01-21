@@ -1,6 +1,7 @@
 
 import numpy as np
 import math
+import copy
 
 
 class Sudoku:
@@ -13,10 +14,10 @@ class Sudoku:
 		Constructor of the Sudoku.
 		:param board: board of digits Sudoku is made of, in the Numpy array format.
 		"""
-		self._board = board
-		self._size = len(board)
-		self._rank = int(math.sqrt(self._size))
-		assert(self._rank ** 2 == self._size)
+		self._board = copy.deepcopy(board)
+		self._size = len(self.board)
+		self._rank = int(math.sqrt(self.size))
+		assert(self.rank ** 2 == self.size)
 
 	@property
 	def rank(self):
@@ -43,23 +44,23 @@ class Sudoku:
 	def __str__(self):
 		vertical_line_sign = '|'
 		horizontal_line_sign = '- '
-		border_line = (self._rank * self._rank + 2 * self._rank) \
+		border_line = (self.size + 2 * self.rank) \
 			* horizontal_line_sign + '\n'
 
 		def generate_row(row_number):
 			row = vertical_line_sign
-			for l in range(self._rank):
-				for m in range(self._rank):
-					row += ' ' + str(self._board[row_number][self._rank * l + m]) + ' '
+			for l in range(self.rank):
+				for m in range(self.rank):
+					row += ' ' + str(self.board[row_number][self.rank * l + m]) + ' '
 				row += vertical_line_sign
 
 			row += '\n'
 			return row
 
 		to_print = border_line
-		for i in range(self._rank):
-			for j in range(self._rank):
-				to_print += generate_row(self._rank * i + j)
+		for i in range(self.rank):
+			for j in range(self.rank):
+				to_print += generate_row(self.rank * i + j)
 			to_print += border_line
 
 		return to_print
