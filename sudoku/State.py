@@ -26,7 +26,10 @@ class State:
 		Random position may
 		"""
 		position = random.choice(self.sudoku.editable_positions)
-		digit = np.random.randint(low=1, high=self.sudoku.size, size=1)
+		old_digit = self.sudoku.board[position[0]][position[1]]
+		digit = old_digit
+		while old_digit == digit:
+			digit = np.random.randint(low=1, high=self.sudoku.size, size=1)
 		self.sudoku.update_digit(position_to_edit=position, new_digit=digit)
 
 
