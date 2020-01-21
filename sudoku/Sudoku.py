@@ -9,15 +9,17 @@ class Sudoku:
 	Class representing classic Sudoku riddle.
 	"""
 
-	def __init__(self, board):
+	def __init__(self, board, hardcoded_digits):
 		"""
 		Constructor of the Sudoku.
 		:param board: board of digits Sudoku is made of, in the Numpy array format.
 		"""
 		self._board = copy.deepcopy(board)
+		self._hardcoded_digits = copy.deepcopy(hardcoded_digits)
 		self._size = len(self.board)
 		self._rank = int(math.sqrt(self.size))
 		assert(self.rank ** 2 == self.size)
+		assert(len(self.board) == len(self.hardcoded_digits))
 
 	@property
 	def rank(self):
@@ -40,6 +42,34 @@ class Sudoku:
 		access field simply by operators: board[y][x] <-> board[row_number][column_number]
 		"""
 		return self._board
+
+	@property
+	def hardcoded_digits(self):
+		return self._hardcoded_digits
+
+	@property
+	def editable_positions(self):
+		"""
+		Returns a list of editable positions in sudoku.
+		"""
+		editables = []
+		for row_number in range(self.size):
+			for col_number in range(self.size):
+				if not self.hardcoded_digits[row_number][col_number]:
+					editables.append((row_number, col_number))
+
+		return editables
+
+	def update_digit(self, position_to_edit, new_digit):
+		"""
+		Updates digit on given position.
+		"""
+		if new_digit < 1 or new_digit > self.size:
+			raise ValueError("Given new digit is incorrect.")
+		elif position_to_edit in self.editable_positions:
+			self._board[position_to_edit[0], position_to_edit[1]] = new_digit
+		else:
+			raise ValueError("Given position is incorrect.")
 
 	def __str__(self):
 		vertical_line_sign = '|'
@@ -85,7 +115,18 @@ if __name__ == "__main__":
 		[2, 1, 4, 3],
 		[4, 3, 2, 1],
 	])
-	sudoku_test = Sudoku(S2)
+	S2_hardcoded = np.array([
+		[True, False, True, True],
+		[True, True, True, True],
+		[True, True, True, True],
+		[True, True, False, True]
+	])
+	sudoku_test = Sudoku(S2, S2_hardcoded)
 	print()
 	print('Sudoku from dummy matrix:')
+	print(sudoku_test)
+	print(sudoku_test.editable_positions)
+	print()
+	assert(sudoku_test.update_digit(0, 0, 2) == -1)
+	sudoku_test.update_digit(0, 1, 3)
 	print(sudoku_test)
