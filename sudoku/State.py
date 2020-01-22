@@ -6,6 +6,7 @@ import random
 class State:
 	"""
 	State defined as a fully filled Sudoku board.
+	Thoroughly described in the documentation.
 	"""
 
 	def __init__(self, sudoku):
@@ -26,7 +27,7 @@ class State:
 		"""
 		Makes a move on the G graph.
 		In another words: ant modifies its State by changing single digit in the sudoku.
-		Random position may
+		Change is made randomly, when no pheromone trail was found by the Ant.
 		"""
 		position = random.choice(self.sudoku.editable_positions)
 		old_digit = self.sudoku.board[position[0]][position[1]]
@@ -34,6 +35,14 @@ class State:
 		while old_digit == digit:
 			digit = np.random.randint(low=1, high=self.sudoku.size, size=1)
 		self.sudoku.update_digit(position_to_edit=position, new_digit=digit)
+
+	def change_deliberately(self, position_to_edit, new_digit):
+		"""
+		Makes a move on the G graph.
+		In another words: and modifies its State by changing single digit in the sudoku.
+		Change is made deliberately, when pheromone attracted the Ant.
+		"""
+		# TODO
 
 	def _update_conflict_count(self):
 		"""

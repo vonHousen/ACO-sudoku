@@ -13,6 +13,7 @@ class Sudoku:
 		"""
 		Constructor of the Sudoku.
 		:param board: board of digits Sudoku is made of, in the Numpy array format.
+		:param hardcoded_digits: Numpy array of booleans, where Trues indicates which number is "hardcoded".
 		"""
 		self._board = copy.deepcopy(board)
 		self._hardcoded_digits = copy.deepcopy(hardcoded_digits)
