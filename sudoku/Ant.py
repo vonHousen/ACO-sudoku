@@ -1,5 +1,4 @@
 
-from sudoku.Sudoku import *
 from sudoku.State import *
 
 
@@ -15,6 +14,7 @@ class Ant:
 		:param initial_state:	Initial state representing anthill, from which each ant starts its journey.
 		"""
 		self._state = copy.deepcopy(initial_state)
+		self._initial_state = copy.deepcopy(initial_state)
 
 	@property
 	def state(self):
@@ -22,6 +22,18 @@ class Ant:
 		The only state ant is the owner, which consistently modifies as traveling throughout the G graph.
 		"""
 		return self._state
+
+	def move(self):
+		"""
+		Ant makes a move (in graph sense) = changes its state into another.
+		Depends on environment (attractiveness of the nearest Promising State = intensiveness of pheromones).
+		If pheromones are perceived easily, ant moves towards them = calls self.state.change_deliberately().
+		Else - makes random change = calls self.state.change_randomly().
+		After the move ant checks if self.state.is_this_promising_state() - if so, it makes PromisingState out of it,
+		adds it to F-structure and come back to the anthill. If it was already existing PromisingState, ant is not
+		coming back but go further looking for the better, not known one.
+		"""
+		# TODO
 
 
 if __name__ == "__main__":

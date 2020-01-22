@@ -128,6 +128,5 @@ if __name__ == "__main__":
 	print(sudoku_test)
 	print(sudoku_test.editable_positions)
 	print()
-	assert(sudoku_test.update_digit(0, 0, 2) == -1)
-	sudoku_test.update_digit(0, 1, 3)
+	sudoku_test.update_digit((0, 1), 3)
 	print(sudoku_test)

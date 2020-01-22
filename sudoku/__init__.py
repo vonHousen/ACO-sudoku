@@ -1,2 +1,2 @@
 
-__all__ = ["Sudoku", "State"]
+__all__ = ["Sudoku", "State", "Ant", "PromisingState"]
