@@ -45,7 +45,6 @@ class State:
 
 		# TODO
 
-
 	def _update_conflict_count(self):
 		"""
 		Counts conflict's count - f(state) function in documentation.
@@ -58,16 +57,19 @@ class State:
 			if any(self.sudoku[:, i].count(x) > 1 for x in self.sudoku[:, i]):
 				temp_counter += 1
 
-		# make Sodoku 3x3 sub-grid by splitting first vertically and then horizontally
-		grid = np.vsplit(self.sudoku, 3)
-		grid = np.array([np.hsplit(s, 3) for s in grid]).reshape(9, 3, 3)
+		# make Sudoku sub-grid by splitting first vertically and then horizontally
+		grid = np.vsplit(self.sudoku, self.sudoku.rank)
+		grid = np.array([np.hsplit(s, self.sudoku.rank) for s in grid]).reshape(
+			self.sudoku.size,  self.sudoku.rank,  self.sudoku.rank)
 		for g in grid:
 			c = Counter(g)
 			if c > 0:
 				temp_counter += 1
-		self._conflict_count = temp_counter
 
-	# TODO should update both _best_conflict_count & _conflict_count
+		if self._conflict_count < temp_counter:
+			self._best_conflict_count = temp_counter
+
+		self._conflict_count = temp_counter
 
 	def is_this_promising_state(self):
 		"""
@@ -75,12 +77,10 @@ class State:
 		:return: boolean if it is a promising state.
 		"""
 		self._update_conflict_count()
-		if self._conflict_count < self._best_conflict_count:
-			self._best_conflict_count = self._conflict_count
+		if self._best_conflict_count == self._conflict_count:
 			return True
 		else:
 			return False
-	# TODO among others: should call _update_conflict_count()
 
 
 if __name__ == "__main__":
