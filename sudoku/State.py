@@ -58,6 +58,13 @@ class State:
 		"""
 		# TODO among others: should call _update_conflict_count()
 
+	def get_distance_from(self, other_state):
+		"""
+		Calculates the distance from this state to given other_state.
+		:return: calculated distance
+		"""
+		return 1		# TODO
+
 
 if __name__ == "__main__":
 	S = np.array([
