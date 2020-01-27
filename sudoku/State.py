@@ -1,4 +1,4 @@
-
+from  _collections import Counter
 from sudoku.Sudoku import *
 import random
 
@@ -39,9 +39,10 @@ class State:
 	def change_deliberately(self, position_to_edit, new_digit):
 		"""
 		Makes a move on the G graph.
-		In another words: and modifies its State by changing single digit in the sudoku.
+		In another words: ant modifies its State by changing single digit in the sudoku.
 		Change is made deliberately, when pheromone attracted the Ant.
 		"""
+		self.sudoku.update_digit(position_to_edit, new_digit)
 		# TODO
 
 	def _update_conflict_count(self):
@@ -49,14 +50,37 @@ class State:
 		Counts conflict's count - f(state) function in documentation.
 		Updates both _conflict_count & _best_conflict_count
 		"""
-		# TODO should update both _best_conflict_count & _conflict_count
+		temp_counter = 0
+		for i in range(self.sudoku.size):
+			if any(self.sudoku[i, :].count(x) > 1 for x in self.sudoku[i, :]):
+				temp_counter += 1
+			if any(self.sudoku[:, i].count(x) > 1 for x in self.sudoku[:, i]):
+				temp_counter += 1
+
+		# make Sudoku sub-grid by splitting first vertically and then horizontally
+		grid = np.vsplit(self.sudoku, self.sudoku.rank)
+		grid = np.array([np.hsplit(s, self.sudoku.rank) for s in grid]).reshape(
+			self.sudoku.size,  self.sudoku.rank,  self.sudoku.rank)
+		for g in grid:
+			c = Counter(g)
+			if (sum(c.values()) - len(c.values())) > 0:
+				temp_counter += 1
+
+		if self._conflict_count < temp_counter:
+			self._best_conflict_count = temp_counter
+
+		self._conflict_count = temp_counter
 
 	def is_this_promising_state(self):
 		"""
 		Returns True if just updated _conflict_count is better (lower) than calculated _best_conflict_count so far.
 		:return: boolean if it is a promising state.
 		"""
-		# TODO among others: should call _update_conflict_count()
+		self._update_conflict_count()
+		if self._best_conflict_count == self._conflict_count:
+			return True
+		else:
+			return False
 
 	def get_distance_from(self, other_state):
 		"""
