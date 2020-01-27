@@ -19,14 +19,20 @@ class FStructure:
 		Every iteration each PromisingState's pheromone value should be decreased. When one's value is below zero - that
 		PromisingState should be removed from the structure.
 		"""
+		for s in self._promising_states:
+			s.pheromone_value = s.pheromone_value/s.get_distance_from()
 		# TODO
 
-	def add_promising_state(self, new_promising_state):
+	def add_promising_state(self, new_promising_state, alpha):
 		"""
 		When called, at first FStructure should check if new_promising_state already exist. If not - it should add it to
 		self._promisingStates and return True - else: False. After each insert self._promising_states should be
 		re-sorted (when not done by self._promisingStates itself.
 		"""
+		if not self._promising_states.__contains__(new_promising_state):
+			new_promising_state.pheromone_value = (1-alpha)*new_promising_state.pheromone_value
+			self._promising_states.popitem(new_promising_state)
+
 		return True		# TODO
 
 	def get_the_most_attractive_promising_state(self, other_state):

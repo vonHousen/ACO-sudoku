@@ -21,6 +21,7 @@ class Sudoku:
 		self._rank = int(math.sqrt(self.size))
 		assert(self.rank ** 2 == self.size)
 		assert(len(self.board) == len(self.hardcoded_digits))
+		self.Q = 1.0  # const from standard equation
 
 	@property
 	def rank(self):

@@ -53,15 +53,17 @@ class Ant:
 
 		# if this is worth it, mark current new state with pheromone
 		pheromone_value = self._get_pheromone_value()
-		if self._f_structure.add_promising_state(PromisingState(self.state, pheromone_value)):
+		if self._f_structure.add_promising_state(PromisingState(self.state, pheromone_value), alpha):
 			self._get_back_to_anthill()
 
 	def _get_pheromone_value(self):
 		"""
 		Returns pheromone value for current state.
 		"""
-
-		return 1		# TODO
+		if self._promising_states.__contains__(self._state):
+			 return self._state.pheromone_value
+		else:
+			return 	# TODO
 
 	def _get_back_to_anthill(self):
 		"""
