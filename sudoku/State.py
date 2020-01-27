@@ -1,4 +1,4 @@
-
+from  _collections import Counter
 from sudoku.Sudoku import *
 import random
 
@@ -42,21 +42,45 @@ class State:
 		In another words: and modifies its State by changing single digit in the sudoku.
 		Change is made deliberately, when pheromone attracted the Ant.
 		"""
+
 		# TODO
+
 
 	def _update_conflict_count(self):
 		"""
 		Counts conflict's count - f(state) function in documentation.
 		Updates both _conflict_count & _best_conflict_count
 		"""
-		# TODO should update both _best_conflict_count & _conflict_count
+		temp_counter = 0
+		for i in range(self.sudoku.size):
+			if any(self.sudoku[i, :].count(x) > 1 for x in self.sudoku[i, :]):
+				temp_counter += 1
+			if any(self.sudoku[:, i].count(x) > 1 for x in self.sudoku[:, i]):
+				temp_counter += 1
+
+		# make Sodoku 3x3 sub-grid by splitting first vertically and then horizontally
+		grid = np.vsplit(self.sudoku, 3)
+		grid = np.array([np.hsplit(s, 3) for s in grid]).reshape(9, 3, 3)
+		for g in grid:
+			c = Counter(g)
+			if c > 0:
+				temp_counter += 1
+		self._conflict_count = temp_counter
+
+	# TODO should update both _best_conflict_count & _conflict_count
 
 	def is_this_promising_state(self):
 		"""
 		Returns True if just updated _conflict_count is better (lower) than calculated _best_conflict_count so far.
 		:return: boolean if it is a promising state.
 		"""
-		# TODO among others: should call _update_conflict_count()
+		self._update_conflict_count()
+		if self._conflict_count < self._best_conflict_count:
+			self._best_conflict_count = self._conflict_count
+			return True
+		else:
+			return False
+	# TODO among others: should call _update_conflict_count()
 
 
 if __name__ == "__main__":

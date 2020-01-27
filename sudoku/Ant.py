@@ -33,6 +33,8 @@ class Ant:
 		adds it to F-structure and come back to the anthill. If it was already existing PromisingState, ant is not
 		coming back but go further looking for the better, not known one.
 		"""
+
+
 		# TODO
 
 
