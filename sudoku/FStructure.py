@@ -1,5 +1,6 @@
 
 from sudoku.PromisingState import *
+from collections import *
 
 
 class FStructure:
@@ -11,7 +12,7 @@ class FStructure:
 		"""
 		A constructor.
 		"""
-		self._promisingStates = {}		# TODO nice to have: more efficient data structure should be used here
+		self._promising_states = OrderedDict()		# TODO nice to have: more efficient data structure should be used here
 
 	def decrease_pheromones(self):
 		"""
@@ -23,13 +24,14 @@ class FStructure:
 	def add_promising_state(self, new_promising_state):
 		"""
 		When called, at first FStructure should check if new_promising_state already exist. If not - it should add it to
-		self._promisingStates.
+		self._promisingStates and return True - else: False. After each insert self._promising_states should be
+		re-sorted (when not done by self._promisingStates itself.
 		"""
-		# TODO
+		return True		# TODO
 
-	def get_promising_states(self):
+	def get_the_most_attractive_promising_state(self, other_state):
 		"""
-		Returns all contained PromisingStates sorted by pheromone value.
+		Returns the most attractive promising state along with it's attractiveness for the ant in other_state.
 		"""
 		# TODO
 
