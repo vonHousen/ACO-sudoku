@@ -66,7 +66,7 @@ class State:
 			if (sum(c.values()) - len(c.values())) > 0:
 				temp_counter += 1
 
-		if self._conflict_count < temp_counter:
+		if self._conflict_count > temp_counter:
 			self._best_conflict_count = temp_counter
 
 		self._conflict_count = temp_counter
