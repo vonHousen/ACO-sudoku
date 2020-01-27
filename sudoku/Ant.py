@@ -16,6 +16,7 @@ class Ant:
 		self._state = copy.deepcopy(initial_state)
 		self._initial_state = copy.deepcopy(initial_state)
 		self._f_structure = f_structure_ref
+		self.alpha = 0.1
 
 	@property
 	def state(self):
@@ -41,7 +42,10 @@ class Ant:
 		# TODO move towards promising_state
 
 		# make a move
-		if True:		# TODO as specified above
+		prob = [attractiveness, 1-attractiveness]
+		moves = [False, True]
+		move = random.choice(moves, 1, prob)
+		if move:		# TODO as specified above
 			self._state.change_randomly()
 		else:
 			(position, new_digit) = promising_state.get_move_towards(self.state)
@@ -56,6 +60,7 @@ class Ant:
 		"""
 		Returns pheromone value for current state.
 		"""
+
 		return 1		# TODO
 
 	def _get_back_to_anthill(self):
