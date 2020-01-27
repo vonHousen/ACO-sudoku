@@ -1,5 +1,5 @@
 
-from sudoku.State import *
+from sudoku.FStructure import *
 
 
 class Ant:
@@ -8,13 +8,14 @@ class Ant:
 	described in the documentation.
 	"""
 
-	def __init__(self, initial_state):
+	def __init__(self, initial_state, f_structure_ref):
 		"""
 		A constructor.
 		:param initial_state:	Initial state representing anthill, from which each ant starts its journey.
 		"""
 		self._state = copy.deepcopy(initial_state)
 		self._initial_state = copy.deepcopy(initial_state)
+		self._f_structure = f_structure_ref
 
 	@property
 	def state(self):
@@ -33,9 +34,35 @@ class Ant:
 		adds it to F-structure and come back to the anthill. If it was already existing PromisingState, ant is not
 		coming back but go further looking for the better, not known one.
 		"""
+		# try to sense nearest pheromone trail
+		(attractiveness, promising_state) = self._f_structure.get_the_most_attractive_promising_state(self.state)
 
+		# TODO based on the attractiveness parameter, there is weighted random choice whether to make random move or
+		# TODO move towards promising_state
 
-		# TODO
+		# make a move
+		if True:		# TODO as specified above
+			self._state.change_randomly()
+		else:
+			(position, new_digit) = promising_state.get_move_towards(self.state)
+			self._state.change_deliberately(position, new_digit)
+
+		# if this is worth it, mark current new state with pheromone
+		pheromone_value = self._get_pheromone_value()
+		if self._f_structure.add_promising_state(PromisingState(self.state, pheromone_value)):
+			self._get_back_to_anthill()
+
+	def _get_pheromone_value(self):
+		"""
+		Returns pheromone value for current state.
+		"""
+		return 1		# TODO
+
+	def _get_back_to_anthill(self):
+		"""
+		Ant gets back to the beginning - State S_0
+		"""
+		self._state = copy.deepcopy(self._initial_state)
 
 
 if __name__ == "__main__":

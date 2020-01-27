@@ -82,6 +82,21 @@ class State:
 		else:
 			return False
 
+	def get_distance_from(self, other_state):
+		"""
+		Calculates the distance from this state to given other_state.
+		:return: calculated distance
+		"""
+		return 1		# TODO
+
+	def get_move_towards(self, other_state):
+		"""
+		Having all differences between self and other_state, it returns random move - (position, new_digit)
+		that certainly would decrease distance between self and other_state.
+		:return:	Tuple of: position of digit to be changed, new digit to be inserted on the position.
+		"""
+		return (1, 1)		# TODO
+
 
 if __name__ == "__main__":
 	S = np.array([
