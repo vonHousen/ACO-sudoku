@@ -39,10 +39,10 @@ class State:
 	def change_deliberately(self, position_to_edit, new_digit):
 		"""
 		Makes a move on the G graph.
-		In another words: and modifies its State by changing single digit in the sudoku.
+		In another words: ant modifies its State by changing single digit in the sudoku.
 		Change is made deliberately, when pheromone attracted the Ant.
 		"""
-
+		self.sudoku.update_digit(position_to_edit, new_digit)
 		# TODO
 
 	def _update_conflict_count(self):
@@ -63,7 +63,7 @@ class State:
 			self.sudoku.size,  self.sudoku.rank,  self.sudoku.rank)
 		for g in grid:
 			c = Counter(g)
-			if c > 0:
+			if (sum(c.values()) - len(c.values())) > 0:
 				temp_counter += 1
 
 		if self._conflict_count < temp_counter:
