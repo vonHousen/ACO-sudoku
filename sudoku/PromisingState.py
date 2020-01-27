@@ -41,7 +41,6 @@ class PromisingState:
 		return 1		# TODO - should call self.state.get_distance_from(other_state) for sure
 
 
-
 if __name__ == "__main__":
 
 	S = np.array([
