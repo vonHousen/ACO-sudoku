@@ -3,6 +3,8 @@ import numpy as np
 import math
 import copy
 
+ITERATIONS = 1000
+N_ANTS = 10
 
 class Sudoku:
 	"""

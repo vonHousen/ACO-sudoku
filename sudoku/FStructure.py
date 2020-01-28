@@ -2,6 +2,8 @@
 from sudoku.PromisingState import *
 from collections import *
 
+ALPHA = 0.1
+
 
 class FStructure:
 	"""
@@ -23,22 +25,31 @@ class FStructure:
 			s.pheromone_value = s.pheromone_value/s.get_distance_from()
 		# TODO
 
-	def add_promising_state(self, new_promising_state, alpha):
+	def add_promising_state(self, new_promising_state):
 		"""
 		When called, at first FStructure should check if new_promising_state already exist. If not - it should add it to
 		self._promisingStates and return True - else: False. After each insert self._promising_states should be
 		re-sorted (when not done by self._promisingStates itself.
 		"""
 		if not self._promising_states.__contains__(new_promising_state):
-			new_promising_state.pheromone_value = (1-alpha)*new_promising_state.pheromone_value
 			self._promising_states.popitem(new_promising_state)
-
-		return True		# TODO
+			return True
+		else:
+			new_promising_state.pheromone_value = (1 + ALPHA) * new_promising_state.pheromone_value
+			return False
+				# TODO
 
 	def get_the_most_attractive_promising_state(self, other_state):
 		"""
 		Returns the most attractive promising state along with it's attractiveness for the ant in other_state.
 		"""
+		attractiveness = 0
+		for state in self._promising_states:
+			(attractiveness_temp, promising_state_temp) = state.get_attractiveness(other_state)
+			if attractiveness < attractiveness_temp:
+				attractiveness = attractiveness_temp
+				prom_state = promising_state_temp
+		return (attractiveness, prom_state)
 		# TODO
 
 
