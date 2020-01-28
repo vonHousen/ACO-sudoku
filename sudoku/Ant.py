@@ -8,7 +8,7 @@ class Ant:
 	described in the documentation.
 	"""
 
-	def __init__(self, initial_state, f_structure_ref):
+	def __init__(self, initial_state, f_structure_ref, attractiveness_base):
 		"""
 		A constructor.
 		:param initial_state:	Initial state representing anthill, from which each ant starts its journey.
@@ -16,7 +16,8 @@ class Ant:
 		self._state = copy.deepcopy(initial_state)
 		self._initial_state = copy.deepcopy(initial_state)
 		self._f_structure = f_structure_ref
-		#self.alpha = 0.1
+		self._attractiveness_base = int(attractiveness_base)
+		# self.alpha = 0.1
 
 	@property
 	def state(self):
@@ -38,32 +39,29 @@ class Ant:
 		# try to sense nearest pheromone trail
 		(attractiveness, promising_state) = self._f_structure.get_the_most_attractive_promising_state(self.state)
 
-		# TODO based on the attractiveness parameter, there is weighted random choice whether to make random move or
-		# TODO move towards promising_state
+		# based on the attractiveness parameter, there is weighted random choice whether to make random move or
+		# move towards promising_state
+		acceptance_level_random = random.randrange(0, self._attractiveness_base)
+		is_pheromone_sensed = attractiveness > acceptance_level_random
 
 		# make a move
-		prob = [attractiveness, 1-attractiveness]
-		moves = [False, True]
-		move = random.choice(moves, 1, prob)
-		if move:		# TODO as specified above
-			self._state.change_randomly()
-		else:
-			(position, new_digit) = promising_state.get_move_towards(self.state)
+		if is_pheromone_sensed:
+			(position, new_digit) = promising_state.state.get_move_towards(self.state)
 			self._state.change_deliberately(position, new_digit)
+		else:
+			self._state.change_randomly()
 
 		# if this is worth it, mark current new state with pheromone
-		pheromone_value = self._get_pheromone_value()
-		if self._f_structure.add_promising_state(PromisingState(self.state, pheromone_value)):
-			self._get_back_to_anthill()
+		if self._state.is_this_promising_state():
+			pheromone_value = self._get_pheromone_value()
+			if self._f_structure.add_promising_state(PromisingState(self.state, pheromone_value)):
+				self._get_back_to_anthill()
 
 	def _get_pheromone_value(self):
 		"""
 		Returns pheromone value for current state.
 		"""
-		if self._promising_states.__contains__(self._state):
-			return self._state.pheromone_value
-		else:
-			return 	# TODO
+		return 1
 
 	def _get_back_to_anthill(self):
 		"""
@@ -74,17 +72,22 @@ class Ant:
 
 if __name__ == "__main__":
 	S = np.array([
-		[1, 2, 3, 4],
-		[3, 4, 1, 2],
-		[2, 1, 4, 3],
-		[4, 3, 2, 1],
+		[1, 1, 1, 1],
+		[1, 1, 1, 1],
+		[1, 1, 1, 1],
+		[1, 1, 1, 1],
 	])
 	S_hardcoded = np.array([
-		[True, False, True, True],
-		[True, True, True, True],
-		[True, True, True, True],
-		[True, True, False, True]
+		[False, False, True, True],
+		[False, False, True, True],
+		[False, True, True, True],
+		[False, True, False, True]
 	])
-	ant_test = Ant(State(Sudoku(S, S_hardcoded)))
-	print(ant_test.state.sudoku)
+	f_structure_test = FStructure(0.2, 1.0)
+	ant_test = Ant(State(Sudoku(S, S_hardcoded)), f_structure_test, 100000)
 	print(ant_test)
+	print(ant_test.state.sudoku)
+	for i in range(0, 100):
+		ant_test.move()
+		print(ant_test.state.sudoku)
+

@@ -31,6 +31,9 @@ class PromisingState:
 		"""
 		return self._pheromone_value
 
+	def update_pheromone_value_by(self, alpha):
+		self._pheromone_value *= alpha
+
 	def get_attractiveness(self, other_state):
 		"""
 		When called, it returns attractiveness value of self, based on calculated distance from given other_state
@@ -39,8 +42,11 @@ class PromisingState:
 		:return: 				attractiveness value
 		"""
 		distance = self.state.get_distance_from(other_state)
-		pheromone = self.state.pheromone_value
-		return pheromone/distance
+		pheromone = self.pheromone_value
+		if distance == 0:
+			return 0
+		else:
+			return pheromone/distance
 
 
 if __name__ == "__main__":
