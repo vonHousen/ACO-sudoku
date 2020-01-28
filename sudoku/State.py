@@ -87,7 +87,13 @@ class State:
 		Calculates the distance from this state to given other_state.
 		:return: calculated distance
 		"""
-		return 1		# TODO
+		distance = 0
+		for row_id in range(0, self.sudoku.size):
+			for col_id in range(0, self.sudoku.size):
+				if self.sudoku.board[row_id][col_id] != other_state.sudoku.board[row_id][col_id]:
+					distance += 1
+
+		return distance
 
 	def get_move_towards(self, other_state):
 		"""
@@ -95,7 +101,13 @@ class State:
 		that certainly would decrease distance between self and other_state.
 		:return:	Tuple of: position of digit to be changed, new digit to be inserted on the position.
 		"""
-		return (1, 1)		# TODO
+		available_moves = []
+		for row_id in range(0, self.sudoku.size):
+			for col_id in range(0, self.sudoku.size):
+				if self.sudoku.board[row_id][col_id] != other_state.sudoku.board[row_id][col_id]:
+					available_moves.append(((row_id, col_id), other_state.sudoku.board[row_id][col_id]))
+
+		return random.choice(available_moves)
 
 
 if __name__ == "__main__":
