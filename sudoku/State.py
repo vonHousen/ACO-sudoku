@@ -43,7 +43,6 @@ class State:
 		Change is made deliberately, when pheromone attracted the Ant.
 		"""
 		self.sudoku.update_digit(position_to_edit, new_digit)
-		# TODO
 
 	def _update_conflict_count(self):
 		"""

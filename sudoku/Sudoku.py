@@ -99,7 +99,7 @@ class Sudoku:
 
 
 if __name__ == "__main__":
-	# TODO S would be an internal representation of a sudoku class
+	# S would be an internal representation of a sudoku class
 	S3 = np.array([
 		[1, 2, 3, 1, 2, 3, 1, 2, 3],
 		[4, 5, 6, 4, 5, 6, 4, 5, 6],

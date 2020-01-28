@@ -61,7 +61,7 @@ class Ant:
 		Returns pheromone value for current state.
 		"""
 		if self._promising_states.__contains__(self._state):
-			 return self._state.pheromone_value
+			return self._state.pheromone_value
 		else:
 			return 	# TODO
 
