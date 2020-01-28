@@ -16,7 +16,7 @@ class Ant:
 		self._state = copy.deepcopy(initial_state)
 		self._initial_state = copy.deepcopy(initial_state)
 		self._f_structure = f_structure_ref
-		self.alpha = 0.1
+		#self.alpha = 0.1
 
 	@property
 	def state(self):
@@ -53,7 +53,7 @@ class Ant:
 
 		# if this is worth it, mark current new state with pheromone
 		pheromone_value = self._get_pheromone_value()
-		if self._f_structure.add_promising_state(PromisingState(self.state, pheromone_value), alpha):
+		if self._f_structure.add_promising_state(PromisingState(self.state, pheromone_value)):
 			self._get_back_to_anthill()
 
 	def _get_pheromone_value(self):
