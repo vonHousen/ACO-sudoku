@@ -38,7 +38,9 @@ class PromisingState:
 		:param other_state: 	state from which distance is calculated.
 		:return: 				attractiveness value
 		"""
-		return self.pheromone_value / self.state.get_distance_from(other_state)
+		distance = self.state.get_distance_from(other_state)
+		pheromone = self.state.pheromone_value
+		return pheromone/distance
 
 
 if __name__ == "__main__":
